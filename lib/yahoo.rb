@@ -16,12 +16,13 @@ class Yahoo
     puts @url
 
     @url.each do |url|
-      data = Nokogiri::HTML(open(url))
+      analyst_data = Nokogiri::HTML(open(url))
 
-      full_text_name = data.css("div.title h2").text
+      full_text_name = earnings_data.css("div.title h2").text
       name = full_text_name.gsub(/\([^()]*\)(?![^\[]*])/,"")
       ticker = full_text_name.scan(/\([^()]*\)(?![^\[]*])/).first.gsub("(","").gsub(")","")
-      
+
+      market_data = Nokogiri::HTML(open("http://finance.yahoo.com/q?s=#{ticker}"))
       
       puts name
 
