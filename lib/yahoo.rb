@@ -5,7 +5,7 @@ class Yahoo
     require 'open-uri'
 
     
-    tickers_array = ["DOW", "ZIP", "BAC", "NFLX", "GS", "CTCT", "CRM", "ORCL", "HPQ", "GOOG", "SREV", "SQI", "CSCO", "CSOD", "HOME"]
+    tickers_array = ["DOW", "BAC", "NFLX", "GS", "CTCT", "CRM", "ORCL", "HPQ", "GOOG", "SREV", "SQI", "CSCO", "CSOD", "HOME"]
 
     @url = []
 
@@ -63,9 +63,13 @@ class Yahoo
 
       # NOT AN EXLPLICIT COLUMN IN THE DATABASE - EV / TTM EBITDA
       if !market_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[17].nil?
-        @ev_ebitda = market_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[17].text
+        if market_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[17].include?("K")
+          @ev_ebitda = "0"
+        else
+          @ev_ebitda = market_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[17].text
+        end
       else
-        @ev_ebitda = "0" 
+        @ev_ebitda = "0"
       end
 
       # puts @ev_ebitda

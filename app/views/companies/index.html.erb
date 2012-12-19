@@ -1,67 +1,74 @@
-<h1>Comparable Company Analysis</h1>
+<div class="tabbable"> <!-- Only required for left/right tabs -->
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab1" data-toggle="tab">SaaS</a></li>
+    <li><a href="#tab2" data-toggle="tab">Internet</a></li>
+    <li><a href="#tab5" data-toggle="tab">Software</a></li>
+    <li><a href="#tab7" data-toggle="tab">Other</a></li>
+  </ul>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Ticker</th>
-    <th>Share Price</th>
-    <th>Market cap</th>
-    <th>Enterprise value</th>
-    <th>EV/CY Sales</th>
-    <th>EV/CY+1 Sales</th>
-    <th>P/E LTM</th>
-    <th>P/E CY</th>
-    <th>P/E CY+1</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+  <div class="tab-content">
+    <div class="tab-pane active" id="tab1">
+        <h4>Software-as-a-Service</h4>
 
-<% @companies.each do |company| %>
-  <tr>
-    <td><%= company.name %></td>
-    <td><%= company.ticker %></td>
-    <td><%= number_to_currency(company.stock_price) %></td>
-    <td><%= number_to_currency(company.market_cap, :precision=>0) %></td>
-    <td>
-        <% if company.enterprise_value %>
-            <% if company.enterprise_value < 0 %>
-                <%= "nmf" %>
-                <% else %>
-                <%= number_to_currency(company.enterprise_value, :precision=>0) %></td>
-            <% end %>
-        <% end %>
-    <td>
-        <% if company.enterprise_value %>
-            <% if company.enterprise_value/(company.sales_cy) < 0 || company.enterprise_value/(company.sales_cy) > 100 %>
-                <%= "nmf" %>
-                <% else %>
-            <%= number_with_precision(company.enterprise_value/(company.sales_cy), :precision=>1) %>x</td>
-            <% end %>
-        <% end %>
-    <td><% if company.enterprise_value %>
-            <% if company.enterprise_value/(company.sales_cy_plus_one) < 0 || company.enterprise_value/(company.sales_cy_plus_one) > 100 %>
-                <%= "nmf" %>
-                <% else %>
-            <%= number_with_precision(company.enterprise_value/(company.sales_cy_plus_one), :precision=>1) %>x</td>
-            <% end %>
-        <% end %>
-    <td><% if company.stock_price %>
-            <% if company.stock_price/(company.earnings_cy) < 0 || company.stock_price/(company.earnings_cy) > 100 %>
-            <%= "nmf" %>
-            <% else %>
-            <%= number_with_precision(company.stock_price/(company.earnings_cy), :precision=>1) %>x</td>
-            <% end %>
-        <% end %>
-    <td><%= company.earnings_cy %></td>
-    <td><%= company.earnings_cy_plus_one %></td>
-    <td><%= link_to 'Show', company %></td>
-    <td><%= link_to 'Edit', edit_company_path(company) %></td>
-    <td><%= link_to 'Destroy', company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+        <table class="table table-hover">
+          <tr>
+            <th>Company</th>
+            <th>Ticker</th>
+            <th>Share Price</th>
+            <th>Market Cap</th>
+            <th>Enterprise Value</th>
+            <th>EV/CY Sales</th>
+            <th>EV/CY+1 Sales</th>
+            <th>EV/LTM EBITDA</th>
+            <th>P/E CY</th>
+          </tr>
 
-<br />
-
-<%= link_to 'New Company', new_company_path %>
+        <% @companies.each do |company| %>
+          <tr>
+            <td><%= company.name %></td>
+            <td><%= company.ticker %></td>
+            <td><%= number_to_currency(company.stock_price) %></td>
+            <td><%= number_to_currency(company.market_cap, :precision=>0) %></td>
+            <td>
+                <% if company.enterprise_value %>
+                    <% if company.enterprise_value < 0 %>
+                        <%= "nmf" %>
+                        <% else %>
+                        <%= number_to_currency(company.enterprise_value, :precision=>0) %></td>
+                    <% end %>
+                <% end %>
+            <td>
+                <% if company.enterprise_value %>
+                    <% if company.enterprise_value/(company.sales_cy) < 0 || company.enterprise_value/(company.sales_cy) > 100 %>
+                        <%= "nmf" %>
+                        <% else %>
+                    <%= number_with_precision(company.enterprise_value/(company.sales_cy), :precision=>1) %>x</td>
+                    <% end %>
+                <% end %>
+            <td><% if company.enterprise_value %>
+                    <% if company.enterprise_value/(company.sales_cy_plus_one) < 0 || company.enterprise_value/(company.sales_cy_plus_one) > 100 %>
+                        <%= "nmf" %>
+                        <% else %>
+                    <%= number_with_precision(company.enterprise_value/(company.sales_cy_plus_one), :precision=>1) %>x</td>
+                    <% end %>
+                <% end %>
+            <td><% if company.ev_ebitda %>
+                    <% if company.ev_ebitda < 0 || company.ev_ebitda > 100 || company.ev_ebitda == 0 %>
+                    <%= "nmf" %>
+                    <% else %>
+                    <%= number_with_precision(company.ev_ebitda, :precision=>1) %>x</td>
+                    <% end %>
+                <% end %>
+            <td><% if company.stock_price %>
+                    <% if company.stock_price/(company.earnings_ltm) < 0 || company.stock_price/(company.earnings_ltm) > 100 %>
+                    <%= "nmf" %>
+                    <% else %>
+                    <%= number_with_precision(company.stock_price/(company.earnings_ltm), :precision=>1) %>x</td>
+                    <% end %>
+                <% end %>
+            </tr>
+            <% end %>
+        </table>
+    </div>
+    </div>
+</div>

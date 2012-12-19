@@ -1,5 +1,7 @@
 Comps::Application.routes.draw do
-  resources :companies
+  resources :companies, :only => [:index]
+
+  root to: "companies#index"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
