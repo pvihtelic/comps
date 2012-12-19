@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121219012555) do
+ActiveRecord::Schema.define(:version => 20121219045640) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -24,8 +24,17 @@ ActiveRecord::Schema.define(:version => 20121219012555) do
     t.decimal  "earnings_ltm"
     t.decimal  "earnings_cy"
     t.decimal  "earnings_cy_plus_one"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+    t.decimal  "low_sales_cy"
+    t.decimal  "high_sales_cy"
+    t.decimal  "low_sales_cy_plus_one"
+    t.decimal  "high_sales_cy_plus_one"
+    t.decimal  "low_earnings_cy"
+    t.decimal  "high_earnings_cy"
+    t.decimal  "low_earnings_cy_plus_one"
+    t.decimal  "high_earnings_cy_plus_one"
+    t.decimal  "ev_ebitda"
   end
 
 end

@@ -66,17 +66,54 @@ class Yahoo
 
       # puts @ev_ebitda
 
-      cy_sales_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[28].text.gsub("B","").gsub("M","")
+      sales_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[28].text.gsub("B","").gsub("M","")
+
+      sales_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[29].text.gsub("B","").gsub("M","")
+
+      low_sales_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[38].text.gsub("B","").gsub("M","")
+      low_sales_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[39].text.gsub("B","").gsub("M","")
+
+      high_sales_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[43].text.gsub("B","").gsub("M","")
+      high_sales_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[44].text.gsub("B","").gsub("M","")
+
+      last_year_sales = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[48].text.gsub("B","").gsub("M","")
+
+      # puts high_sales_cy_plus_one
+
+
+      earnings_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].text.gsub("B","").gsub("M","")
+
+      earnings_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[4].text.gsub("B","").gsub("M","")
+
+      low_earnings_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[13].text.gsub("B","").gsub("M","")
+      low_earnings_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[14].text.gsub("B","").gsub("M","")
+
+      high_earnings_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[18].text.gsub("B","").gsub("M","")
+      high_earnings_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[19].text.gsub("B","").gsub("M","")
+
+      last_year_earnings = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[23].text.gsub("B","").gsub("M","")
+
+      puts last_year_earnings
+
       
-      
-      puts cy_sales_text
-
-      # sales_cy_plus_one_text = 
-      # earnings_ltm =
-      # earnings_cy_text = 
-      # earnings_cy_plus_one_text = 
-
-
+      Company.create(:name=>name,
+       :ticker=>ticker, 
+       :market_cap=>market_cap, 
+       :enterprise_value=>enterprise_value, 
+       :sales_ltm=>@ev_sale, 
+       :sales_cy=>sales_cy,
+       :sales_cy_plus_one=>sales_cy_plus_one, 
+       :low_sales_cy=>low_sales_cy, 
+       :high_sales_cy=>high_sales_cy, 
+       :low_sales_cy_plus_one=>low_sales_cy_plus_one, 
+       :high_sales_cy_plus_one=>high_sales_cy_plus_one, 
+       :earnings_cy=> earnings_cy,
+       :earnings_cy_plus_one=> earnings_cy_plus_one,
+       :low_earnings_cy=>low_earnings_cy, 
+       :high_earnings_cy=>high_earnings_cy, 
+       :low_earnings_cy_plus_one=>low_earnings_cy_plus_one, 
+       :high_earnings_cy_plus_one=>high_earnings_cy_plus_one, 
+       :ev_ebitda=>@ev_ebitda)
 
     end
   end
