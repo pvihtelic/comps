@@ -1,4 +1,4 @@
-<h1>Listing companies</h1>
+<h1>Comparable Company Analysis</h1>
 
 <table>
   <tr>
@@ -6,12 +6,11 @@
     <th>Ticker</th>
     <th>Market cap</th>
     <th>Enterprise value</th>
-    <th>Sales ltm</th>
-    <th>Sales cy</th>
-    <th>Sales cy plus one</th>
-    <th>Earnings ltm</th>
-    <th>Earnings cy</th>
-    <th>Earnings cy plus one</th>
+    <th>EV/CY Sales</th>
+    <th>EV/CY+1 Sales</th>
+    <th>P/E LTM</th>
+    <th>P/E CY</th>
+    <th>P/E CY+1</th>
     <th></th>
     <th></th>
     <th></th>
@@ -21,11 +20,15 @@
   <tr>
     <td><%= company.name %></td>
     <td><%= company.ticker %></td>
-    <td><%= company.market_cap %></td>
-    <td><%= company.enterprise_value %></td>
-    <td><%= company.sales_ltm %></td>
-    <td><%= company.sales_cy %></td>
-    <td><%= company.sales_cy_plus_one %></td>
+    <td><%= number_to_currency(company.market_cap, :precision=>1) %></td>
+    <td><%= number_to_currency(company.enterprise_value, :precision=>1) %></td>
+    <td>
+        <% if company.enterprise_value %>
+        <%= number_with_precision(company.enterprise_value/(company.sales_cy), :precision=>1) %>x</td>
+        <% end %>
+    <td><% if company.enterprise_value %>
+        <%= number_with_precision(company.enterprise_value/(company.sales_cy_plus_one), :precision=>1) %>x</td>
+        <% end %>
     <td><%= company.earnings_ltm %></td>
     <td><%= company.earnings_cy %></td>
     <td><%= company.earnings_cy_plus_one %></td>

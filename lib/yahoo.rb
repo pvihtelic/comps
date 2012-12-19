@@ -5,7 +5,7 @@ class Yahoo
     require 'open-uri'
 
     
-    tickers_array = ["DOW", "ZIP", "BAC", "NFLX"]
+    tickers_array = ["DOW", "ZIP", "BAC", "NFLX", "GS", "CTCT", "CRM", "ORCL", "HPQ", "GOOG", "SREV", "SQI", "CSCO", "CSOD", "HOME"]
 
     @url = []
 
@@ -28,7 +28,7 @@ class Yahoo
       market_cap_text = market_data.xpath('//span[contains(@id, "yfs_j10")]').text
 
       if market_cap_text.include?("B")
-        market_cap = market_cap_text.gsub("B","").to_i*1000
+        market_cap = market_cap_text.gsub("B","")
       elsif market_cap_text.include?("M")
         market_cap = market_cap_text.gsub("M","")
       else
@@ -41,7 +41,7 @@ class Yahoo
       end
 
       if @enterprise_value_text.include?("B")
-        enterprise_value = @enterprise_value_text.gsub("B","").to_i*1000
+        enterprise_value = @enterprise_value_text.gsub("B","").to_i
       elsif @enterprise_value_text.include?("M")
         enterprise_value = @enterprise_value_text.gsub("M","")
       else
@@ -66,7 +66,23 @@ class Yahoo
 
       # puts @ev_ebitda
 
-      sales_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[28].text.gsub("B","").gsub("M","")
+      if analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[28].text.gsub("B","").gsub("M","")
+        sales_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[28].text
+        sales_cy = sales_cy_text.gsub("B","").gsub("M","")
+
+      end  
+
+      if @enterprise_value_text.include?("B") && sales_cy_text.include?("M")
+        enterprise_value = @enterprise_value_text.gsub("B","").to_i*1000
+      elsif @enterprise_value_text.include?("M") && sales_cy.include?("B")
+        enterprise_value = @enterprise_value_text.gsub("M","").to_i/1000 
+      end
+
+      if market_cap_text.include?("B") && sales_cy_text.include?("M")
+        market_cap = market_cap_text.gsub("B","").to_i*1000
+      elsif market_cap_text.include?("M") && sales_cy.include?("B")
+        market_cap = market_cap_text.gsub("M","").to_i/1000 
+      end
 
       sales_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[29].text.gsub("B","").gsub("M","")
 
@@ -95,7 +111,6 @@ class Yahoo
 
       puts last_year_earnings
 
-      
       Company.create(:name=>name,
        :ticker=>ticker, 
        :market_cap=>market_cap, 
