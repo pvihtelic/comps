@@ -27,6 +27,10 @@ class Yahoo
 
       market_cap_text = market_data.xpath('//span[contains(@id, "yfs_j10")]').text
 
+      stock_price = market_data.xpath('//span[@class="time_rtq_ticker"]/span').text
+
+      # puts share_price
+
       if market_cap_text.include?("B")
         market_cap = market_cap_text.gsub("B","")
       elsif market_cap_text.include?("M")
@@ -41,7 +45,7 @@ class Yahoo
       end
 
       if @enterprise_value_text.include?("B")
-        enterprise_value = @enterprise_value_text.gsub("B","").to_i
+        enterprise_value = @enterprise_value_text.gsub("B","").to_f
       elsif @enterprise_value_text.include?("M")
         enterprise_value = @enterprise_value_text.gsub("M","")
       else
@@ -73,15 +77,15 @@ class Yahoo
       end  
 
       if @enterprise_value_text.include?("B") && sales_cy_text.include?("M")
-        enterprise_value = @enterprise_value_text.gsub("B","").to_i*1000
+        enterprise_value = @enterprise_value_text.gsub("B","").to_f*1000
       elsif @enterprise_value_text.include?("M") && sales_cy.include?("B")
-        enterprise_value = @enterprise_value_text.gsub("M","").to_i/1000 
+        enterprise_value = @enterprise_value_text.gsub("M","").to_f/1000 
       end
 
       if market_cap_text.include?("B") && sales_cy_text.include?("M")
-        market_cap = market_cap_text.gsub("B","").to_i*1000
+        market_cap = market_cap_text.gsub("B","").to_f*1000
       elsif market_cap_text.include?("M") && sales_cy.include?("B")
-        market_cap = market_cap_text.gsub("M","").to_i/1000 
+        market_cap = market_cap_text.gsub("M","").to_f/1000 
       end
 
       sales_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[29].text.gsub("B","").gsub("M","")
@@ -113,6 +117,7 @@ class Yahoo
 
       Company.create(:name=>name,
        :ticker=>ticker, 
+       :stock_price=>stock_price, 
        :market_cap=>market_cap, 
        :enterprise_value=>enterprise_value, 
        :sales_ltm=>@ev_sale, 

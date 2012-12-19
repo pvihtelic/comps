@@ -4,6 +4,7 @@
   <tr>
     <th>Name</th>
     <th>Ticker</th>
+    <th>Share Price</th>
     <th>Market cap</th>
     <th>Enterprise value</th>
     <th>EV/CY Sales</th>
@@ -20,6 +21,7 @@
   <tr>
     <td><%= company.name %></td>
     <td><%= company.ticker %></td>
+    <td><%= number_to_currency(company.stock_price) %></td>
     <td><%= number_to_currency(company.market_cap, :precision=>1) %></td>
     <td><%= number_to_currency(company.enterprise_value, :precision=>1) %></td>
     <td>
@@ -29,7 +31,10 @@
     <td><% if company.enterprise_value %>
         <%= number_with_precision(company.enterprise_value/(company.sales_cy_plus_one), :precision=>1) %>x</td>
         <% end %>
-    <td><%= company.earnings_ltm %></td>
+
+    <td><% if company.market_cap %>
+        <%= number_with_precision(company.market_cap/(company.earnings_cy), :precision=>1) %>x</td>
+        <% end %>
     <td><%= company.earnings_cy %></td>
     <td><%= company.earnings_cy_plus_one %></td>
     <td><%= link_to 'Show', company %></td>
