@@ -1,0 +1,55 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @company.name %>
+</p>
+
+<p>
+  <b>Ticker:</b>
+  <%= @company.ticker %>
+</p>
+
+<p>
+  <b>Market cap:</b>
+  <%= @company.market_cap %>
+</p>
+
+<p>
+  <b>Enterprise value:</b>
+  <%= @company.enterprise_value %>
+</p>
+
+<p>
+  <b>Sales ltm:</b>
+  <%= @company.sales_ltm %>
+</p>
+
+<p>
+  <b>Sales cy:</b>
+  <%= @company.sales_cy %>
+</p>
+
+<p>
+  <b>Sales cy plus one:</b>
+  <%= @company.sales_cy_plus_one %>
+</p>
+
+<p>
+  <b>Earnings ltm:</b>
+  <%= @company.earnings_ltm %>
+</p>
+
+<p>
+  <b>Earnings cy:</b>
+  <%= @company.earnings_cy %>
+</p>
+
+<p>
+  <b>Earnings cy plus one:</b>
+  <%= @company.earnings_cy_plus_one %>
+</p>
+
+
+<%= link_to 'Edit', edit_company_path(@company) %> |
+<%= link_to 'Back', companies_path %>

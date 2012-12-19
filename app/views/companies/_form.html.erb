@@ -1,0 +1,57 @@
+<%= form_for(@company) do |f| %>
+  <% if @company.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@company.errors.count, "error") %> prohibited this company from being saved:</h2>
+
+      <ul>
+      <% @company.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :ticker %><br />
+    <%= f.text_field :ticker %>
+  </div>
+  <div class="field">
+    <%= f.label :market_cap %><br />
+    <%= f.text_field :market_cap %>
+  </div>
+  <div class="field">
+    <%= f.label :enterprise_value %><br />
+    <%= f.text_field :enterprise_value %>
+  </div>
+  <div class="field">
+    <%= f.label :sales_ltm %><br />
+    <%= f.text_field :sales_ltm %>
+  </div>
+  <div class="field">
+    <%= f.label :sales_cy %><br />
+    <%= f.text_field :sales_cy %>
+  </div>
+  <div class="field">
+    <%= f.label :sales_cy_plus_one %><br />
+    <%= f.text_field :sales_cy_plus_one %>
+  </div>
+  <div class="field">
+    <%= f.label :earnings_ltm %><br />
+    <%= f.text_field :earnings_ltm %>
+  </div>
+  <div class="field">
+    <%= f.label :earnings_cy %><br />
+    <%= f.text_field :earnings_cy %>
+  </div>
+  <div class="field">
+    <%= f.label :earnings_cy_plus_one %><br />
+    <%= f.text_field :earnings_cy_plus_one %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

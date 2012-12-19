@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  ticker: MyString
+  market_cap: 9.99
+  enterprise_value: 9.99
+  sales_ltm: 9.99
+  sales_cy: 9.99
+  sales_cy_plus_one: 9.99
+  earnings_ltm: 9.99
+  earnings_cy: 9.99
+  earnings_cy_plus_one: 9.99
+
+two:
+  name: MyString
+  ticker: MyString
+  market_cap: 9.99
+  enterprise_value: 9.99
+  sales_ltm: 9.99
+  sales_cy: 9.99
+  sales_cy_plus_one: 9.99
+  earnings_ltm: 9.99
+  earnings_cy: 9.99
+  earnings_cy_plus_one: 9.99
