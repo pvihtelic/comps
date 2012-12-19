@@ -22,18 +22,36 @@
     <td><%= company.name %></td>
     <td><%= company.ticker %></td>
     <td><%= number_to_currency(company.stock_price) %></td>
-    <td><%= number_to_currency(company.market_cap, :precision=>1) %></td>
-    <td><%= number_to_currency(company.enterprise_value, :precision=>1) %></td>
+    <td><%= number_to_currency(company.market_cap, :precision=>0) %></td>
     <td>
         <% if company.enterprise_value %>
-        <%= number_with_precision(company.enterprise_value/(company.sales_cy), :precision=>1) %>x</td>
+            <% if company.enterprise_value < 0 %>
+                <%= "nmf" %>
+                <% else %>
+                <%= number_to_currency(company.enterprise_value, :precision=>0) %></td>
+            <% end %>
+        <% end %>
+    <td>
+        <% if company.enterprise_value %>
+            <% if company.enterprise_value/(company.sales_cy) < 0 || company.enterprise_value/(company.sales_cy) > 100 %>
+                <%= "nmf" %>
+                <% else %>
+            <%= number_with_precision(company.enterprise_value/(company.sales_cy), :precision=>1) %>x</td>
+            <% end %>
         <% end %>
     <td><% if company.enterprise_value %>
-        <%= number_with_precision(company.enterprise_value/(company.sales_cy_plus_one), :precision=>1) %>x</td>
+            <% if company.enterprise_value/(company.sales_cy_plus_one) < 0 || company.enterprise_value/(company.sales_cy_plus_one) > 100 %>
+                <%= "nmf" %>
+                <% else %>
+            <%= number_with_precision(company.enterprise_value/(company.sales_cy_plus_one), :precision=>1) %>x</td>
+            <% end %>
         <% end %>
-
-    <td><% if company.market_cap %>
-        <%= number_with_precision(company.market_cap/(company.earnings_cy), :precision=>1) %>x</td>
+    <td><% if company.stock_price %>
+            <% if company.stock_price/(company.earnings_cy) < 0 || company.stock_price/(company.earnings_cy) > 100 %>
+            <%= "nmf" %>
+            <% else %>
+            <%= number_with_precision(company.stock_price/(company.earnings_cy), :precision=>1) %>x</td>
+            <% end %>
         <% end %>
     <td><%= company.earnings_cy %></td>
     <td><%= company.earnings_cy_plus_one %></td>

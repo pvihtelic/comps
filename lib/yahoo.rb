@@ -32,7 +32,7 @@ class Yahoo
       # puts share_price
 
       if market_cap_text.include?("B")
-        market_cap = market_cap_text.gsub("B","")
+        market_cap = market_cap_text.gsub("B","").to_f*1000
       elsif market_cap_text.include?("M")
         market_cap = market_cap_text.gsub("M","")
       else
@@ -45,7 +45,7 @@ class Yahoo
       end
 
       if @enterprise_value_text.include?("B")
-        enterprise_value = @enterprise_value_text.gsub("B","").to_f
+        enterprise_value = @enterprise_value_text.gsub("B","").to_f*1000
       elsif @enterprise_value_text.include?("M")
         enterprise_value = @enterprise_value_text.gsub("M","")
       else
@@ -72,25 +72,25 @@ class Yahoo
 
       if analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[28].text.gsub("B","").gsub("M","")
         sales_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[28].text
-        sales_cy = sales_cy_text.gsub("B","").gsub("M","")
-
-      end  
-
-      if @enterprise_value_text.include?("B") && sales_cy_text.include?("M")
-        enterprise_value = @enterprise_value_text.gsub("B","").to_f*1000
-      elsif @enterprise_value_text.include?("M") && sales_cy.include?("B")
-        enterprise_value = @enterprise_value_text.gsub("M","").to_f/1000 
+        if sales_cy_text.include?("B")
+          @sales_cy = sales_cy_text.gsub("B","").to_f*1000
+        else  
+          @sales_cy = sales_cy_text.gsub("M","")
+        end
       end
 
-      if market_cap_text.include?("B") && sales_cy_text.include?("M")
-        market_cap = market_cap_text.gsub("B","").to_f*1000
-      elsif market_cap_text.include?("M") && sales_cy.include?("B")
-        market_cap = market_cap_text.gsub("M","").to_f/1000 
+      
+      sales_cy_plus_one_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[29].text
+      if sales_cy_plus_one_text.include?("B")
+        @sales_cy_plus_one = sales_cy_plus_one_text.gsub("B","").gsub("M","").to_f*1000
+      else    
+        @sales_cy_plus_one = sales_cy_plus_one_text.gsub("B","").gsub("M","")
       end
 
-      sales_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[29].text.gsub("B","").gsub("M","")
-
-      low_sales_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[38].text.gsub("B","").gsub("M","")
+      
+      low_sales_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[38].text
+      @low_sales_cy = low_sales_cy_text.gsub("B","").gsub("M","")
+  
       low_sales_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[39].text.gsub("B","").gsub("M","")
 
       high_sales_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[43].text.gsub("B","").gsub("M","")
@@ -100,8 +100,8 @@ class Yahoo
 
       # puts high_sales_cy_plus_one
 
-
-      earnings_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].text.gsub("B","").gsub("M","")
+      earnings_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].text
+      earnings_cy = earnings_cy_text.gsub("B","").gsub("M","")
 
       earnings_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[4].text.gsub("B","").gsub("M","")
 
@@ -113,20 +113,33 @@ class Yahoo
 
       last_year_earnings = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[23].text.gsub("B","").gsub("M","")
 
-      puts last_year_earnings
+      # puts last_year_earnings
+
+      if @enterprise_value_text.include?("B") && sales_cy_text.include?("M")
+        enterprise_value = @enterprise_value_text.gsub("B","").to_f*1000
+      elsif @enterprise_value_text.include?("M") && sales_cy_text.include?("B")
+        enterprise_value = @enterprise_value_text.gsub("M","").to_f/1000 
+      end
+
+      if market_cap_text.include?("B") && earnings_cy_text.include?("M")
+        market_cap = market_cap_text.gsub("B","").to_f*1000
+      elsif market_cap_text.include?("M") && earnings_cy_text.include?("B")
+        market_cap = market_cap_text.gsub("M","").to_f/1000 
+      end
 
       Company.create(:name=>name,
        :ticker=>ticker, 
        :stock_price=>stock_price, 
        :market_cap=>market_cap, 
        :enterprise_value=>enterprise_value, 
-       :sales_ltm=>@ev_sale, 
-       :sales_cy=>sales_cy,
-       :sales_cy_plus_one=>sales_cy_plus_one, 
-       :low_sales_cy=>low_sales_cy, 
+       :sales_ltm=>last_year_sales, 
+       :sales_cy=>@sales_cy,
+       :sales_cy_plus_one=>@sales_cy_plus_one, 
+       :low_sales_cy=>@low_sales_cy, 
        :high_sales_cy=>high_sales_cy, 
        :low_sales_cy_plus_one=>low_sales_cy_plus_one, 
        :high_sales_cy_plus_one=>high_sales_cy_plus_one, 
+       :earnings_ltm=>last_year_earnings,
        :earnings_cy=> earnings_cy,
        :earnings_cy_plus_one=> earnings_cy_plus_one,
        :low_earnings_cy=>low_earnings_cy, 
@@ -134,7 +147,6 @@ class Yahoo
        :low_earnings_cy_plus_one=>low_earnings_cy_plus_one, 
        :high_earnings_cy_plus_one=>high_earnings_cy_plus_one, 
        :ev_ebitda=>@ev_ebitda)
-
     end
   end
 end  
