@@ -1,74 +1,72 @@
 <div class="tabbable"> <!-- Only required for left/right tabs -->
   <ul class="nav nav-tabs">
-    <li class="active"><a href="#tab1" data-toggle="tab">SaaS</a></li>
-    <li><a href="#tab2" data-toggle="tab">Internet</a></li>
-    <li><a href="#tab5" data-toggle="tab">Software</a></li>
-    <li><a href="#tab7" data-toggle="tab">Other</a></li>
+    <li class="active"><a href="#tab1" data-toggle="tab">Advertising Tech</a></li>
+    <li><a href="#tab2" data-toggle="tab">Content</a></li>
+    <li><a href="#tab3" data-toggle="tab">Digital Media</a></li>
+    <li><a href="#tab4" data-toggle="tab">eCommerce</a></li>
+    <li><a href="#tab5" data-toggle="tab">Gaming</a></li>
+    <li><a href="#tab6" data-toggle="tab">Mobile</a></li>
+    <li><a href="#tab7" data-toggle="tab">Online Retail</a></li>
+    <li><a href="#tab8" data-toggle="tab">SaaS</a></li>
+    <li><a href="#tab9" data-toggle="tab">Web Services</a></li>
   </ul>
 
   <div class="tab-content">
+
+    
     <div class="tab-pane active" id="tab1">
-        <h4>Software-as-a-Service</h4>
-
-        <table class="table table-hover">
-          <tr>
-            <th>Company</th>
-            <th>Ticker</th>
-            <th>Share Price</th>
-            <th>Market Cap</th>
-            <th>Enterprise Value</th>
-            <th>EV/CY Sales</th>
-            <th>EV/CY+1 Sales</th>
-            <th>EV/LTM EBITDA</th>
-            <th>P/E CY</th>
-          </tr>
-
-        <% @companies.each do |company| %>
-          <tr>
-            <td><%= company.name %></td>
-            <td><%= company.ticker %></td>
-            <td><%= number_to_currency(company.stock_price) %></td>
-            <td><%= number_to_currency(company.market_cap, :precision=>0) %></td>
-            <td>
-                <% if company.enterprise_value %>
-                    <% if company.enterprise_value < 0 %>
-                        <%= "nmf" %>
-                        <% else %>
-                        <%= number_to_currency(company.enterprise_value, :precision=>0) %></td>
-                    <% end %>
-                <% end %>
-            <td>
-                <% if company.enterprise_value %>
-                    <% if company.enterprise_value/(company.sales_cy) < 0 || company.enterprise_value/(company.sales_cy) > 100 %>
-                        <%= "nmf" %>
-                        <% else %>
-                    <%= number_with_precision(company.enterprise_value/(company.sales_cy), :precision=>1) %>x</td>
-                    <% end %>
-                <% end %>
-            <td><% if company.enterprise_value %>
-                    <% if company.enterprise_value/(company.sales_cy_plus_one) < 0 || company.enterprise_value/(company.sales_cy_plus_one) > 100 %>
-                        <%= "nmf" %>
-                        <% else %>
-                    <%= number_with_precision(company.enterprise_value/(company.sales_cy_plus_one), :precision=>1) %>x</td>
-                    <% end %>
-                <% end %>
-            <td><% if company.ev_ebitda %>
-                    <% if company.ev_ebitda < 0 || company.ev_ebitda > 100 || company.ev_ebitda == 0 %>
-                    <%= "nmf" %>
-                    <% else %>
-                    <%= number_with_precision(company.ev_ebitda, :precision=>1) %>x</td>
-                    <% end %>
-                <% end %>
-            <td><% if company.stock_price %>
-                    <% if company.stock_price/(company.earnings_ltm) < 0 || company.stock_price/(company.earnings_ltm) > 100 %>
-                    <%= "nmf" %>
-                    <% else %>
-                    <%= number_with_precision(company.stock_price/(company.earnings_ltm), :precision=>1) %>x</td>
-                    <% end %>
-                <% end %>
-            </tr>
-            <% end %>
-        </table>
+        <h4>Advertising Tech</h4>
+        <% @company_group = @advertising_tech_companies %>
+        <%= render 'companies/table' %>
     </div>
+
+    <div class="tab-pane" id="tab2">
+        <h4>Content</h4>
+        <% @company_group = @content_companies %>
+        <%= render 'companies/table' %>
+    </div>
+
+    <div class="tab-pane" id="tab3">
+        <h4>Digital Media</h4>
+        <% @company_group = @digital_media_companies %>
+        <%= render 'companies/table' %>
+    </div>
+
+    <div class="tab-pane" id="tab4">
+        <h4>eCommerce</h4>
+        <% @company_group = @ecommerce_companies %>
+        <%= render 'companies/table' %>
+    </div>
+
+    <div class="tab-pane" id="tab5">
+        <h4>Gaming</h4>
+        <% @company_group = @gaming_companies %>
+        <%= render 'companies/table' %>
+    </div>
+
+    <div class="tab-pane" id="tab6">
+        <h4>Mobile</h4>
+        <% @company_group = @mobile_companies %>
+        <%= render 'companies/table' %>
+    </div>
+
+    <div class="tab-pane" id="tab7">
+        <h4>Online Retail</h4>
+        <% @company_group = @online_retail_companies %>
+        <%= render 'companies/table' %>
+    </div>
+
+    <div class="tab-pane" id="tab8">
+        <h4>Software-as-a-Service</h4>
+        <% @company_group = @saas_companies %>  
+        <%= render 'companies/table' %>
+    </div>
+
+    <div class="tab-pane" id="tab9">
+        <h4>Web Services</h4>
+        <% @company_group = @web_services_companies %>  
+        <%= render 'companies/table' %>
+    </div>
+
     </div>
 </div>

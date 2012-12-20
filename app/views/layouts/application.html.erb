@@ -12,6 +12,7 @@
     <%= yield(:head) %>
   </head>
   <body>
+    <div class="holder">
     <header class="navbar navbar-fixed-top">
       <nav class="navbar-inner">
         <div class="container">
@@ -28,10 +29,16 @@
               <%= yield %>
             </div>
           </div>
-          <footer>
+          <footer class="footer">
+            <div class="navbar navbar-fixed-bottom">
+              <ul class="footer-nav">
+                <li class="footer-nav"><%= link_to "Created by Pat Vihtelic", "http://www.linkedin.com/profile/view?id=20715052&goback=%2Enmp_*1_*1_*1_*1_*1_*1_*1_*1_*1&trk=spm_pic", :class=>"footer-nav" %></li>
+              </ul>
+            </div>
           </footer>
         </div>
       </div> <!--! end of .container -->
     </div> <!--! end of #main -->
+    </div>
   </body>
 </html>

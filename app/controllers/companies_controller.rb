@@ -4,6 +4,16 @@ class CompaniesController < ApplicationController
   def index
     @companies = Company.all
 
+    @saas_companies = Company.where(:group=>"Software-as-a-Service").order("market_cap DESC")
+    @ecommerce_companies = Company.where(:group=>"eCommerce").order("market_cap DESC")
+    @online_retail_companies = Company.where(:group=>"Online Retail").order("market_cap DESC")
+    @advertising_tech_companies = Company.where(:group=>"Advertising Tech").order("market_cap DESC")
+    @content_companies = Company.where(:group=>"Content").order("market_cap DESC")
+    @digital_media_companies = Company.where(:group=>"Digital Media").order("market_cap DESC")
+    @gaming_companies = Company.where(:group=>"Gaming").order("market_cap DESC")
+    @mobile_companies = Company.where(:group=>"Mobile").order("market_cap DESC")
+    @web_services_companies = Company.where(:group=>"Web Services").order("market_cap DESC")
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @companies }

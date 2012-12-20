@@ -3,13 +3,52 @@ class Yahoo
   def self.scrape
     require 'nokogiri'
     require 'open-uri'
-
     
-    tickers_array = ["DOW", "BAC", "NFLX", "GS", "CTCT", "CRM", "ORCL", "HPQ", "GOOG", "SREV", "SQI", "CSCO", "CSOD", "HOME"]
+    saas_array = ["ATHN", "CNQR", "TRAK", "ET", "N", "RP", "CRM", "NOW", "SREV", "SNCR", "ULTI", "BV", "CTCT", "DWRE", "JIVE", "LPSN", "LOGM", "MDSO", "MKTG", "EOPN", "ELLI", "IL", "SQI", "SPSC", "TNGO", "VOCS"]
+    ecommerce_array = ["EBAY", "PCLN", "EXPE", "GRPN", "AWAY", "LQDT", "EGOV", "MWW", "PRLB", "OPEN", "DHX", "ZIP", "OWW", "EHTH", "TZOO"]
+    online_retail_array = ["AMZN", "HSNI", "SFLY", "VPRT", "UNTD", "STMP", "NILE", "PRSS", "FLWS", "PETS", "OSTK", "PRTS", "GKNT", "DIET"]
+    advertising_tech_array = ["MSFT", "GOOG", "VCLK", "BV", "BCOR", "MKTG", "SCOR", "CTCT", "QNST", "RLOC", "MCHX", "LYRI"]
+    content_array = ["YHOO", "IACI", "TRIP", "AOL", "NFLX", "P", 'RATE', "RNWK", "ACOM", "DMD", "WBMD", "MOVE", "XOXO", "TTGT", "TREE", "TST", "ZIPR", "WEBM"]
+    digital_media_array = ["FB", "LNKD", "MEET", "FFN", "YELP", "Z", "ANGI"]
+    gaming_array = ["ATVI", "EA", "ZNGA", "GME", "TTWO", "COOL", "THQI"]
+    mobile_array = ["DOX", "MM", "VELT", "GLUU", "TNAV", "AUGT", "TSYS", "MOTR"]
+    web_services_array = ["ACTV", "WWWW", "DRIV", "LOGM", "SYNC", "CARB", "TCX"]
 
     @url = []
 
-    tickers_array.each do |ticker|
+    saas_array.each do |ticker|
+      @url << "http://finance.yahoo.com/q/ae?s=#{ticker}"
+    end
+
+    ecommerce_array.each do |ticker|
+      @url << "http://finance.yahoo.com/q/ae?s=#{ticker}"
+    end
+
+    online_retail_array.each do |ticker|
+      @url << "http://finance.yahoo.com/q/ae?s=#{ticker}"
+    end
+
+    advertising_tech_array.each do |ticker|
+      @url << "http://finance.yahoo.com/q/ae?s=#{ticker}"
+    end
+
+    content_array.each do |ticker|
+      @url << "http://finance.yahoo.com/q/ae?s=#{ticker}"
+    end
+
+    digital_media_array.each do |ticker|
+      @url << "http://finance.yahoo.com/q/ae?s=#{ticker}"
+    end
+
+    gaming_array.each do |ticker|
+      @url << "http://finance.yahoo.com/q/ae?s=#{ticker}"
+    end
+
+    mobile_array.each do |ticker|
+      @url << "http://finance.yahoo.com/q/ae?s=#{ticker}"
+    end
+
+    web_services_array.each do |ticker|
       @url << "http://finance.yahoo.com/q/ae?s=#{ticker}"
     end
 
@@ -19,9 +58,12 @@ class Yahoo
       analyst_data = Nokogiri::HTML(open(url))
 
       full_text_name = analyst_data.css("div.title h2").text
-      name = full_text_name.gsub(/\([^()]*\)(?![^\[]*])/,"")
-      ticker = full_text_name.scan(/\([^()]*\)(?![^\[]*])/).first.gsub("(","").gsub(")","")
-
+      if !full_text_name.nil?
+        name = full_text_name.gsub(/\([^()]*\)(?![^\[]*])/,"")
+        ticker = full_text_name.scan(/\([^()]*\)(?![^\[]*])/).first.gsub("(","").gsub(")","")
+      else
+      end
+        
       market_data = Nokogiri::HTML(open("http://finance.yahoo.com/q/ks?s=#{ticker}"))
       # puts market_data
 
@@ -31,12 +73,14 @@ class Yahoo
 
       # puts share_price
 
-      if market_cap_text.include?("B")
-        market_cap = market_cap_text.gsub("B","").to_f*1000
-      elsif market_cap_text.include?("M")
-        market_cap = market_cap_text.gsub("M","")
-      else
-      end 
+      if !market_cap_text.nil?
+        if market_cap_text.include?("B")
+          market_cap = market_cap_text.gsub("B","").to_f*1000
+        elsif market_cap_text.include?("M")
+          market_cap = market_cap_text.gsub("M","")
+        else
+        end
+      end   
 
       if !market_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].nil?
         @enterprise_value_text = market_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].text
@@ -44,13 +88,13 @@ class Yahoo
         @enterprise_value_text = "0" 
       end
 
-      if @enterprise_value_text.include?("B")
-        enterprise_value = @enterprise_value_text.gsub("B","").to_f*1000
-      elsif @enterprise_value_text.include?("M")
-        enterprise_value = @enterprise_value_text.gsub("M","")
-      else
-      end
-
+    
+        if @enterprise_value_text.include?("B")
+          enterprise_value = @enterprise_value_text.gsub("B","").to_f*1000
+        elsif @enterprise_value_text.include?("M")
+          enterprise_value = @enterprise_value_text.gsub("M","")
+        else
+        end
       # puts enterprise_value
 
       # NOT AN EXLPLICIT COLUMN IN THE DATABASE - EV / TTM SALES
@@ -131,8 +175,65 @@ class Yahoo
         market_cap = market_cap_text.gsub("M","").to_f/1000 
       end
 
+      saas_array.each do |saas_ticker|
+        if saas_ticker == ticker
+          @group = "Software-as-a-Service"
+        end
+      end
+
+      ecommerce_array.each do |ecommerce_ticker|
+        if ecommerce_ticker == ticker
+          @group = "eCommerce"
+        end
+      end
+
+      online_retail_array.each do |online_retail_ticker|
+        if online_retail_ticker == ticker
+          @group = "Online Retail"
+        end
+      end
+
+      advertising_tech_array.each do |advertising_tech_ticker|
+        if advertising_tech_ticker == ticker
+          @group = "Advertising Tech"
+        end
+      end
+
+      content_array.each do |content_ticker|
+        if content_ticker == ticker
+          @group = "Content"
+        end
+      end
+
+      digital_media_array.each do |digital_media_ticker|
+        if digital_media_ticker == ticker
+          @group = "Digital Media"
+        end
+      end
+
+      gaming_array.each do |gaming_ticker|
+        if gaming_ticker == ticker
+          @group = "Gaming"
+        end
+      end
+
+      mobile_array.each do |mobile_ticker|
+        if mobile_ticker == ticker
+          @group = "Mobile"
+        end
+      end
+
+      web_services_array.each do |web_services_ticker|
+        if web_services_ticker == ticker
+          @group = "Web Services"
+        end
+      end
+
+      puts ticker
+
       Company.create(:name=>name,
        :ticker=>ticker, 
+       :group=>@group,
        :stock_price=>stock_price, 
        :market_cap=>market_cap, 
        :enterprise_value=>enterprise_value, 
