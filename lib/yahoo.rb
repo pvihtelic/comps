@@ -5,7 +5,7 @@ class Yahoo
     require 'open-uri'
     
     saas_array = ["ATHN", "CNQR", "TRAK", "ET", "N", "RP", "CRM", "NOW", "SREV", "SNCR", "ULTI", "BV", "CTCT", "DWRE", "JIVE", "LPSN", "LOGM", "MDSO", "MKTG", "EOPN", "ELLI", "IL", "SQI", "SPSC", "TNGO", "VOCS"]
-    ecommerce_array = ["EBAY", "PCLN", "EXPE", "GRPN", "AWAY", "LQDT", "EGOV", "MWW", "PRLB", "OPEN", "DHX", "ZIP", "OWW", "EHTH", "TZOO"]
+    ecommerce_array = ["EBAY", "PCLN", "EXPE", "GRPN", "AWAY", "LQDT", "EGOV", "MWW", "PRLB", "OPEN", "DHX", "OWW", "EHTH", "TZOO"]
     online_retail_array = ["AMZN", "HSNI", "SFLY", "VPRT", "UNTD", "STMP", "NILE", "PRSS", "FLWS", "PETS", "OSTK", "PRTS", "GKNT", "DIET"]
     advertising_tech_array = ["MSFT", "GOOG", "VCLK", "BCOR", "SCOR", "QNST", "RLOC", "MCHX", "LYRI"]
     content_array = ["YHOO", "IACI", "TRIP", "AOL", "NFLX", "P", 'RATE', "RNWK", "ACOM", "DMD", "WBMD", "MOVE", "XOXO", "TTGT", "TREE", "TST", "ZIPR", "WEBM"]
