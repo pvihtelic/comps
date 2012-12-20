@@ -1,0 +1,79 @@
+<table class="table table-hover">
+          <tr>
+            <th>Company</th>
+            <th>Ticker</th>
+            <th>Share Price</th>
+            <th>Market Cap</th>
+            <th>Enterprise Value</th>
+            <th>EV/CY Sales</th>
+            <th>EV/CY+1 Sales</th>
+            <th>EV/LTM EBITDA</th>
+            <th>P/E CY</th>
+          </tr>
+
+        <% @company_group.each do |company| %>
+          <tr>
+            <td><%= company.name %></td>
+            <td><%= company.ticker %></td>
+            <td>
+                <% if !company.stock_price.nil? %>
+                    <%= number_to_currency(company.stock_price) %>
+                    <% else %>
+                    <%= "na" %></td>
+                <% end %>
+            <td>
+                <% if !company.market_cap.nil? %>
+                    <%= number_to_currency(company.market_cap, :precision=>0) %>
+                    <% else %>
+                    <%= "na" %>
+                <% end %></td>
+            <td>
+                <% if !company.enterprise_value.nil? %>
+                    <% if company.enterprise_value < 0 %>
+                        <%= "nmf" %>
+                        <% else %>
+                        <%= number_to_currency(company.enterprise_value, :precision=>0) %>
+                    <% end %>
+                <% else %>
+                    <%= "na" %></td>
+                <% end %>
+            <td>
+                <% if !company.sales_cy.nil? && !company.enterprise_value.nil? %>
+                    <% if company.enterprise_value/(company.sales_cy) < 0 || company.enterprise_value/(company.sales_cy) > 100 %>
+                        <%= "nmf" %>
+                        <% else %>
+                    <%= number_with_precision(company.enterprise_value/(company.sales_cy), :precision=>1) %>x
+                    <% end %>
+                <% else %>
+                    <%= "na" %></td>
+                <% end %>
+            <td><% if !company.enterprise_value.nil? && !company.sales_cy_plus_one.nil? %>
+                    <% if company.enterprise_value/(company.sales_cy_plus_one) < 0 || company.enterprise_value/(company.sales_cy_plus_one) > 100 %>
+                        <%= "nmf" %>
+                        <% else %>    
+                    <%= number_with_precision(company.enterprise_value/(company.sales_cy_plus_one), :precision=>1) %>x
+                    <% end %>
+                <% else %>
+                    <%= "na" %></td>
+                <% end %>
+            <td><% if !company.ev_ebitda.nil? %>
+                    <% if company.ev_ebitda < 0 || company.ev_ebitda > 100 || company.ev_ebitda == 0 %>
+                        <%= "nmf" %>
+                        <% else %>
+                        <%= number_with_precision(company.ev_ebitda, :precision=>1) %>x
+                        <% end %>
+                <% else %>
+                    <%= "na" %></td>
+                <% end %>
+            <td><% if !company.stock_price.nil? %>
+                    <% if company.stock_price/(company.earnings_ltm) < 0 || company.stock_price/(company.earnings_ltm) > 100 %>
+                    <%= "nmf" %>
+                    <% else %>
+                    <%= number_with_precision(company.stock_price/(company.earnings_ltm), :precision=>1) %>x
+                    <% end %>
+                <% else %>
+                    <%= "na" %></td>
+                <% end %>
+            </tr>
+            <% end %>
+</table>

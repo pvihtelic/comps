@@ -1,0 +1,72 @@
+@import "bootstrap";
+body { padding-top: 60px; }
+@import "bootstrap-responsive";
+
+.content {
+  background-color: none;
+  padding: 20px;
+  margin: 0 -20px 20px -20px; /* negative indent the amount of the padding to maintain the grid system */
+  -webkit-box-shadow: 0 6px 6px rgba(0,0,0,.45);
+  -moz-box-shadow: 0 6px 6px rgba(0,0,0,.45);
+  box-shadow: 0 6px 6px rgba(0,0,0,.45);
+}
+
+.table th {
+	vertical-align: bottom;
+}
+
+.navbar .brand {
+	font-weight: bold;
+	font-family: monospace;
+	color: #F0F0F0;
+	text-shadow: 0 1px 1px rgba(248, 248, 248, 1);
+	-webkit-transition: all .2s linear;
+	-moz-transition: all .2s linear;
+	transition: all .5s linear;
+}
+
+.navbar .brand:hover {
+	color: #181818;
+	text-shadow: 0 1px 1px rgba(248, 248, 248, .9);
+}
+
+.navbar-inner {
+	background-color: white;
+	background-image: none;
+}
+
+.nav-tabs > li {
+	margin-bottom: -2px;
+}
+
+html,body{
+    height: 100%
+}
+
+.holder {
+    min-height: 100%;
+    position:relative;
+}
+
+footer{
+    bottom: 0;
+    height: 100px;
+    left: 0;
+    position: absolute;
+    right: 0;
+}
+
+.footer-nav {
+	list-style-type: none;
+	font-weight: bold;
+	color: #F0F0F0;
+	-webkit-transition: all .2s linear;
+	-moz-transition: all .2s linear;
+	transition: all .5s linear;
+}
+
+.footer-nav:hover {
+	color: #181818;
+	text-shadow: 0 1px 1px rgba(248, 248, 248, .9);
+	text-decoration: none;
+}
