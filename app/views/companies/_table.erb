@@ -42,7 +42,7 @@
                     <% if company.enterprise_value/(company.sales_cy) < 0 || company.enterprise_value/(company.sales_cy) > 100 %>
                         <%= "nmf" %>
                         <% else %>
-                    <%= number_with_precision(company.enterprise_value/(company.sales_cy), :precision=>1) %>x
+                    <%= number_with_precision(company.enterprise_value/(company.sales_cy), :precision=>2) %>x
                     <% end %>
                 <% else %>
                     <%= "na" %></td>
@@ -51,7 +51,7 @@
                     <% if company.enterprise_value/(company.sales_cy_plus_one) < 0 || company.enterprise_value/(company.sales_cy_plus_one) > 100 %>
                         <%= "nmf" %>
                         <% else %>    
-                    <%= number_with_precision(company.enterprise_value/(company.sales_cy_plus_one), :precision=>1) %>x
+                    <%= number_with_precision(company.enterprise_value/(company.sales_cy_plus_one), :precision=>2) %>x
                     <% end %>
                 <% else %>
                     <%= "na" %></td>
