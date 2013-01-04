@@ -8,7 +8,7 @@ class Yahoo
     ecommerce_array = ["EBAY", "PCLN", "EXPE", "GRPN", "AWAY", "LQDT", "EGOV", "MWW", "PRLB", "OPEN", "DHX", "OWW", "EHTH", "TZOO"]
     online_retail_array = ["AMZN", "HSNI", "SFLY", "VPRT", "UNTD", "STMP", "NILE", "PRSS", "FLWS", "PETS", "OSTK", "PRTS", "GKNT", "DIET"]
     advertising_tech_array = ["MSFT", "GOOG", "VCLK", "BCOR", "SCOR", "QNST", "RLOC", "MCHX"]
-    content_array = ["YHOO", "IACI", "TRIP", "AOL", "NFLX", "P", "ACOM", "DMD", "WBMD", "MOVE", "XOXO", "TTGT", "TREE"]
+    content_array = ["YHOO", "IACI", "TRIP", "AOL", "NFLX", "P", 'RATE', "RNWK", "ACOM", "DMD", "WBMD", "MOVE", "XOXO", "TTGT", "TREE"]
     digital_media_array = ["FB", "LNKD", "MEET", "FFN", "YELP", "Z", "ANGI"]
     gaming_array = ["ATVI", "EA", "ZNGA", "GME", "TTWO", "COOL", "THQI"]
     mobile_array = ["DOX", "MM", "VELT", "GLUU", "TNAV", "AUGT", "TSYS", "MOTR"]
@@ -60,7 +60,7 @@ class Yahoo
       full_text_name = analyst_data.css("div.title h2").text
       if !full_text_name.nil?
         name = full_text_name.gsub(/\([^()]*\)(?![^\[]*])/,"")
-        ticker = full_text_name.scan(/\([^()]*\)(?![^\[]*])/).first.gsub("(","").gsub(")","")
+        ticker = full_text_name.scan(/\([^()]*\)(?![^\[]*])/).first.gsub("(","")
       else
       end
         
