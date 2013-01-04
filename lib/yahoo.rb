@@ -57,10 +57,11 @@ class Yahoo
     @url.each do |url|
       analyst_data = Nokogiri::HTML(open(url))
 
+      if !analyst_data.nil?
       full_text_name = analyst_data.css("div.title h2").text
-      if !full_text_name.nil?
+      if !full_text_name.nil? && full_text_name.include?("(")
         name = full_text_name.gsub(/\([^()]*\)(?![^\[]*])/,"")
-        ticker = full_text_name.scan(/\([^()]*\)(?![^\[]*])/).first.gsub("(","")
+        ticker = full_text_name.scan(/\([^()]*\)(?![^\[]*])/).first.gsub("(","").gsub(")","")
       else
       end
         
@@ -118,7 +119,7 @@ class Yahoo
 
       # puts @ev_ebitda
 
-      if analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[28].text.gsub("B","").gsub("M","")
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[28].nil?
         sales_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[28].text
         if sales_cy_text.include?("B")
           @sales_cy = sales_cy_text.gsub("B","").to_f*1000
@@ -128,38 +129,66 @@ class Yahoo
       end
 
       
-      sales_cy_plus_one_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[29].text
-      if sales_cy_plus_one_text.include?("B")
-        @sales_cy_plus_one = sales_cy_plus_one_text.gsub("B","").gsub("M","").to_f*1000
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[29].nil?
+      @sales_cy_plus_one_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[29].text
+      end
+      if @sales_cy_plus_one_text.include?("B")
+        @sales_cy_plus_one = @sales_cy_plus_one_text.gsub("B","").gsub("M","").to_f*1000
       else    
-        @sales_cy_plus_one = sales_cy_plus_one_text.gsub("B","").gsub("M","")
+        @sales_cy_plus_one = @sales_cy_plus_one_text.gsub("B","").gsub("M","")
       end
 
-      
-      low_sales_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[38].text
-      @low_sales_cy = low_sales_cy_text.gsub("B","").gsub("M","")
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[38].nil?
+        @low_sales_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[38].text
+      end
+      @low_sales_cy = @low_sales_cy_text.gsub("B","").gsub("M","")
   
-      low_sales_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[39].text.gsub("B","").gsub("M","")
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[39].nil?
+        @low_sales_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[39].text.gsub("B","").gsub("M","")
+      end
 
-      high_sales_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[43].text.gsub("B","").gsub("M","")
-      high_sales_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[44].text.gsub("B","").gsub("M","")
-
-      last_year_sales = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[48].text.gsub("B","").gsub("M","")
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[43].nil?
+        high_sales_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[43].text.gsub("B","").gsub("M","")
+      end
+      
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[44].nil?
+        high_sales_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[44].text.gsub("B","").gsub("M","")  
+      end
+      
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[48].nil?
+        last_year_sales = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[48].text.gsub("B","").gsub("M","")
+      end
 
       # puts high_sales_cy_plus_one
 
-      earnings_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].text
-      earnings_cy = earnings_cy_text.gsub("B","").gsub("M","")
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].nil?
+        earnings_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].text
+        earnings_cy = earnings_cy_text.gsub("B","").gsub("M","")
+      end
 
-      earnings_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[4].text.gsub("B","").gsub("M","")
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[4].nil?
+        earnings_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[4].text.gsub("B","").gsub("M","")
+      end
 
-      low_earnings_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[13].text.gsub("B","").gsub("M","")
-      low_earnings_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[14].text.gsub("B","").gsub("M","")
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[13].nil?
+        low_earnings_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[13].text.gsub("B","").gsub("M","")
+      end
 
-      high_earnings_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[18].text.gsub("B","").gsub("M","")
-      high_earnings_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[19].text.gsub("B","").gsub("M","")
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[14].nil?
+        low_earnings_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[14].text.gsub("B","").gsub("M","")
+      end
 
-      last_year_earnings = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[23].text.gsub("B","").gsub("M","")
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[18].nil?
+        high_earnings_cy = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[18].text.gsub("B","").gsub("M","")
+      end
+
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[19].nil?
+        high_earnings_cy_plus_one = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[19].text.gsub("B","").gsub("M","")
+      end
+
+      if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[23].nil?
+        last_year_earnings = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[23].text.gsub("B","").gsub("M","")
+      end
 
       # puts last_year_earnings
 
@@ -242,7 +271,7 @@ class Yahoo
        :sales_cy_plus_one=>@sales_cy_plus_one, 
        :low_sales_cy=>@low_sales_cy, 
        :high_sales_cy=>high_sales_cy, 
-       :low_sales_cy_plus_one=>low_sales_cy_plus_one, 
+       :low_sales_cy_plus_one=>@low_sales_cy_plus_one, 
        :high_sales_cy_plus_one=>high_sales_cy_plus_one, 
        :earnings_ltm=>last_year_earnings,
        :earnings_cy=> earnings_cy,
@@ -252,6 +281,7 @@ class Yahoo
        :low_earnings_cy_plus_one=>low_earnings_cy_plus_one, 
        :high_earnings_cy_plus_one=>high_earnings_cy_plus_one, 
        :ev_ebitda=>@ev_ebitda)
+    end
     end
   end
 end  
