@@ -66,7 +66,7 @@
                 <% else %>
                     <%= "na" %></td>
                 <% end %>
-            <td><% if !company.stock_price.nil? %>
+            <td><% if !company.stock_price.nil? && !company.earnings_ltm.nil? %>
                     <% if company.stock_price/(company.earnings_ltm) < 0 || company.stock_price/(company.earnings_ltm) > 100 %>
                     <%= "nmf" %>
                     <% else %>
