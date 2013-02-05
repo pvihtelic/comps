@@ -10,7 +10,7 @@ class Yahoo
     advertising_tech_array = ["MSFT", "GOOG", "VCLK", "BCOR", "SCOR", "QNST", "RLOC", "MCHX"]
     content_array = ["YHOO", "IACI", "TRIP", "AOL", "NFLX", "P", "RATE", "RNWK", "DMD", "WBMD", "MOVE", "XOXO", "TTGT", "TREE"]
     digital_media_array = ["FB", "LNKD", "MEET", "FFN", "YELP", "Z", "ANGI"]
-    gaming_array = ["ATVI", "EA", "ZNGA", "GME", "TTWO", "COOL", "THQI"]
+    gaming_array = ["ATVI", "EA", "ZNGA", "GME", "TTWO", "COOL"]
     mobile_array = ["DOX", "MM", "VELT", "GLUU", "TNAV", "AUGT", "TSYS", "MOTR"]
     web_services_array = ["ACTV", "WWWW", "DRIV", "SYNC", "CARB", "TCX"]
 
@@ -166,7 +166,7 @@ class Yahoo
 
       if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].nil?
         @earnings_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].text
-        earnings_cy = earnings_cy_text.gsub("B","").gsub("M","")
+        earnings_cy = @earnings_cy_text.gsub("B","").gsub("M","")
       end
 
       if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[4].nil?
