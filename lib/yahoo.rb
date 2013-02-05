@@ -5,10 +5,10 @@ class Yahoo
     require 'open-uri'
     
     saas_array = ["ATHN", "CNQR", "TRAK", "ET", "N", "RP", "CRM", "NOW", "SREV", "SNCR", "ULTI", "BV", "CTCT", "DWRE", "JIVE", "LPSN", "LOGM", "MDSO", "MKTG", "EOPN", "ELLI", "IL", "SQI", "SPSC", "TNGO", "VOCS"]
-    ecommerce_array = ["EBAY", "PCLN", "EXPE", "GRPN", "AWAY", "LQDT", "EGOV", "MWW", "PRLB", "OPEN", "DHX", "OWW", "EHTH", "TZOO"]
+    ecommerce_array = ["EBAY", "PCLN", "EXPE", "GRPN", "AWAY", "LQDT", "EGOV", "MWW", "OPEN", "DHX", "OWW", "EHTH", "TZOO"]
     online_retail_array = ["AMZN", "HSNI", "SFLY", "VPRT", "UNTD", "STMP", "NILE", "PRSS", "FLWS", "PETS", "OSTK", "PRTS", "GKNT", "DIET"]
     advertising_tech_array = ["MSFT", "GOOG", "VCLK", "BCOR", "SCOR", "QNST", "RLOC", "MCHX"]
-    content_array = ["YHOO", "IACI", "TRIP", "AOL", "NFLX", "P", 'RATE', "RNWK", "ACOM", "DMD", "WBMD", "MOVE", "XOXO", "TTGT", "TREE"]
+    content_array = ["YHOO", "IACI", "TRIP", "AOL", "NFLX", "P", "RATE", "RNWK", "DMD", "WBMD", "MOVE", "XOXO", "TTGT", "TREE"]
     digital_media_array = ["FB", "LNKD", "MEET", "FFN", "YELP", "Z", "ANGI"]
     gaming_array = ["ATVI", "EA", "ZNGA", "GME", "TTWO", "COOL", "THQI"]
     mobile_array = ["DOX", "MM", "VELT", "GLUU", "TNAV", "AUGT", "TSYS", "MOTR"]
@@ -68,17 +68,17 @@ class Yahoo
       market_data = Nokogiri::HTML(open("http://finance.yahoo.com/q/ks?s=#{ticker}"))
       # puts market_data
 
-      market_cap_text = market_data.xpath('//span[contains(@id, "yfs_j10")]').text
+      @market_cap_text = market_data.xpath('//span[contains(@id, "yfs_j10")]').text
 
       stock_price = market_data.xpath('//span[@class="time_rtq_ticker"]/span').text
 
       # puts share_price
 
-      if !market_cap_text.nil?
-        if market_cap_text.include?("B")
-          market_cap = market_cap_text.gsub("B","").to_f*1000
-        elsif market_cap_text.include?("M")
-          market_cap = market_cap_text.gsub("M","")
+      if !@market_cap_text.nil?
+        if @market_cap_text.include?("B")
+          @market_cap = @market_cap_text.gsub("B","").to_f*1000
+        elsif @market_cap_text.include?("M")
+          @market_cap = @market_cap_text.gsub("M","")
         else
         end
       end   
@@ -86,15 +86,16 @@ class Yahoo
       if !market_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].nil?
         @enterprise_value_text = market_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].text
       else
-        @enterprise_value_text = "0" 
+        @enterprise_value_text = 0 
       end
 
-    
-        if @enterprise_value_text.include?("B")
-          enterprise_value = @enterprise_value_text.gsub("B","").to_f*1000
-        elsif @enterprise_value_text.include?("M")
-          enterprise_value = @enterprise_value_text.gsub("M","")
-        else
+        if !@enterprise_value_text.nil?
+          if @enterprise_value_text.include?("B")
+            @enterprise_value = @enterprise_value_text.gsub("B","").to_f*1000
+          elsif @enterprise_value_text.include?("M")
+            @enterprise_value = @enterprise_value_text.gsub("M","")
+          else
+          end
         end
       # puts enterprise_value
 
@@ -120,11 +121,13 @@ class Yahoo
       # puts @ev_ebitda
 
       if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[28].nil?
-        sales_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[28].text
-        if sales_cy_text.include?("B")
-          @sales_cy = sales_cy_text.gsub("B","").to_f*1000
-        else  
-          @sales_cy = sales_cy_text.gsub("M","")
+        @sales_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[28].text
+        if @sales_cy_text.include?("B")
+          @sales_cy = @sales_cy_text.gsub("B","").to_f*1000
+        elsif @sales_cy_text.include?("M")
+          @sales_cy = @sales_cy_text.gsub("M","")
+        else
+          @sales_cy = 0  
         end
       end
 
@@ -162,7 +165,7 @@ class Yahoo
       # puts high_sales_cy_plus_one
 
       if !analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].nil?
-        earnings_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].text
+        @earnings_cy_text = analyst_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].text
         earnings_cy = earnings_cy_text.gsub("B","").gsub("M","")
       end
 
@@ -192,16 +195,20 @@ class Yahoo
 
       # puts last_year_earnings
 
-      if @enterprise_value_text.include?("B") && sales_cy_text.include?("M")
-        enterprise_value = @enterprise_value_text.gsub("B","").to_f*1000
-      elsif @enterprise_value_text.include?("M") && sales_cy_text.include?("B")
-        enterprise_value = @enterprise_value_text.gsub("M","").to_f/1000 
+      if !@enterprise_value_text.nil? && !@sales_cy_text.nil?
+        if @enterprise_value_text.include?("B") && @sales_cy_text.include?("M")
+          @enterprise_value = @enterprise_value_text.gsub("B","").to_f*1000
+        elsif @enterprise_value_text.include?("M") && @sales_cy_text.include?("B")
+          @enterprise_value = @enterprise_value_text.gsub("M","").to_f/1000 
+        end
+      else
+        @enterprise_value = 0
       end
-
-      if market_cap_text.include?("B") && earnings_cy_text.include?("M")
-        market_cap = market_cap_text.gsub("B","").to_f*1000
-      elsif market_cap_text.include?("M") && earnings_cy_text.include?("B")
-        market_cap = market_cap_text.gsub("M","").to_f/1000 
+      
+      if @market_cap_text.include?("B") && @earnings_cy_text.include?("M")
+        @market_cap = @market_cap_text.gsub("B","").to_f*1000
+      elsif @market_cap_text.include?("M") && @earnings_cy_text.include?("B")
+        @market_cap = @market_cap_text.gsub("M","").to_f/1000 
       end
 
       saas_array.each do |saas_ticker|
@@ -264,8 +271,8 @@ class Yahoo
        :ticker=>ticker, 
        :group=>@group,
        :stock_price=>stock_price, 
-       :market_cap=>market_cap, 
-       :enterprise_value=>enterprise_value, 
+       :market_cap=>@market_cap, 
+       :enterprise_value=>@enterprise_value, 
        :sales_ltm=>last_year_sales, 
        :sales_cy=>@sales_cy,
        :sales_cy_plus_one=>@sales_cy_plus_one, 
