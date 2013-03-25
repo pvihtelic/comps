@@ -86,7 +86,7 @@ class Yahoo
       if !market_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].nil?
         @enterprise_value_text = market_data.xpath('//tr/td[contains(@class, "yfnc_table")]')[3].text
       else
-        @enterprise_value_text = 0 
+        @enterprise_value_text = '0'
       end
 
         if !@enterprise_value_text.nil?
